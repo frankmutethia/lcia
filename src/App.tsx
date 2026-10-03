@@ -77,8 +77,11 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Route>
-              <Route path="/events" element={<EventsPage />} />
- <Route path="/" element={<Index />} />
+              <Route path="/" element={<Index />} />
+              {/* Shareable links that open the home page scrolled to a section */}
+              <Route path="/events" element={<Index scrollTo="events" />} />
+              <Route path="/mulembe-night" element={<Index scrollTo="mulembe-night" />} />
+              <Route path="/tickets" element={<Index scrollTo="tickets" />} />
               <Route path="/culture/sub-tribes" element={<SubTribesPage />} />
               <Route
                 path="/culture/taste-of-home"

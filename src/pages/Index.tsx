@@ -11,9 +11,9 @@ import Welfare from "@/components/Welfare";
 import Footer from "@/components/Footer";
 import { useEffect } from "react";
 
-const Index = () => {
+const Index = ({ scrollTo }: { scrollTo?: string }) => {
   useEffect(() => {
-    const sectionId = sessionStorage.getItem("scrollTo");
+    const sectionId = scrollTo ?? sessionStorage.getItem("scrollTo");
     if (!sectionId) return;
 
     sessionStorage.removeItem("scrollTo");
@@ -22,7 +22,7 @@ const Index = () => {
     }, 150);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [scrollTo]);
 
   return (
     <div className="min-h-screen relative overflow-x-hidden">
