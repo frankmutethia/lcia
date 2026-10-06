@@ -90,26 +90,17 @@ const Events = () => {
     <>
       <section id="events" className="py-20 bg-white scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0">
-              <DotLottieReact
-                src="/Calendar.json"
-                loop
-                autoplay
-                style={{ width: "100%", height: "100%" }}
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-              <span>Community,</span>
-              <span className="bg-gradient-to-r from-community-warm to-community-sky bg-clip-text text-transparent">
-                Events & Activities
-              </span>
-            </div>
+        <div className="max-w-2xl mb-10 lg:mb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="block h-0.5 w-8 lg:w-10 bg-community-warm" />
+            <span className="text-xs sm:text-sm font-bold tracking-[0.22em] text-community-warm">EVENTS & ACTIVITIES</span>
+          </div>
+          <h2 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl leading-[1.02] tracking-tight text-[#17201b]">
+            Come together, <span className="italic font-semibold text-[#0f2c20]">celebrate together</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Stay connected with neighbors through our regular events and activities. 
-            There's always something happening in Hearthstone Village!
+          <p className="mt-4 text-base sm:text-lg text-gray-600 leading-relaxed">
+            Stay connected through our regular events and activities. There's always something happening in the Mulembe
+            community.
           </p>
         </div>
 

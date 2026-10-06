@@ -104,7 +104,7 @@ function validate(array $data): array
         $errors['constitutionConsent'] = 'Please read the constitution and confirm that you have read it before submitting.';
     }
     if (($data['constitutionVersion'] ?? null) !== CONSTITUTION_VERSION) {
-        $errors['constitutionVersion'] = 'Please review the official 2026 constitution before submitting.';
+        $errors['constitutionVersion'] = 'Please review the Mulembe Community NSW Inc Constitution (2026) before submitting.';
     }
     $submission['constitutionConsent'] = true;
     $submission['constitutionVersion'] = CONSTITUTION_VERSION;
@@ -143,7 +143,7 @@ function email(array $submission): array
         'Phone number' => $submission['phone'],
         'Positions of interest' => implode('; ', $roleNames),
         'Why I would like to serve' => $submission['motivation'],
-        'Constitution reviewed' => 'Yes - applicant confirmed reading the official 2026 Mulembe Community NSW Inc Constitution.',
+        'Constitution reviewed' => 'Yes - applicant confirmed reading the Mulembe Community NSW Inc Constitution (2026).',
         'Constitution version' => CONSTITUTION_VERSION,
         'Submitted at (Australia/Sydney)' => $submittedAt->format('Y-m-d H:i:s T'),
     ];

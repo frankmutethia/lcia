@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Star, Quote } from "lucide-react";
 import { ADDRESS_LINE_1, ADDRESS_LINE_2, PHONE_DISPLAY, PHONE_TEL, EMAIL } from "@/constants/contact";
 import { useState } from "react";
+import PhoneInput from "@/components/PhoneInput";
 
 const Community = () => {
   const testimonials = [
@@ -175,15 +176,13 @@ const Community = () => {
                 <label htmlFor="mobile" className="text-sm font-medium text-luhya-navy">
                   Mobile Number *
                 </label>
-                <input
-                  type="tel"
+                <PhoneInput
                   id="mobile"
                   name="mobile"
                   value={formData.mobile}
-                  onChange={handleInputChange}
+                  onChange={(mobile) => setFormData(prev => ({ ...prev, mobile }))}
                   required
-                  className="w-full px-4 py-3 border border-luhya-gold/30 rounded-lg focus:border-luhya-gold focus:ring-2 focus:ring-luhya-gold/20 focus:outline-none transition-colors"
-                  placeholder="Enter your mobile number"
+                  fieldClassName="w-full px-4 py-3 bg-white border border-luhya-gold/30 rounded-lg focus:border-luhya-gold focus:ring-2 focus:ring-luhya-gold/20 focus:outline-none transition-colors"
                 />
               </div>
             </div>
