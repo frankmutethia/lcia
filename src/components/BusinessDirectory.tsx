@@ -1,3 +1,4 @@
+import PublishedContent from "@/components/PublishedContent";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, ExternalLink, Instagram } from "lucide-react";
@@ -73,6 +74,7 @@ const BusinessDirectory = () => {
   return (
     <section id="business" className="py-20 bg-gradient-to-b from-white to-luhya-gold/10 scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
+        <PublishedContent type="category" />
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">

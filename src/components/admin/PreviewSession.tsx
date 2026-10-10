@@ -1,28 +1,20 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { cmsRequest, type Session } from "@/lib/cms";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { PreviewContext, usePreview } from "./preview-context";
 
 export function PreviewProvider({ children }: { children: ReactNode }) {
-  // This state is navigation convenience only, not an authentication boundary.
-  const [active, setActive] = useState(() => {
-    try {
-      return sessionStorage.getItem("mulembe-admin-preview") === "open";
-    } catch {
-      return false;
-    }
-  });
-  function update(value: boolean) {
-    setActive(value);
-    try {
-      if (value) sessionStorage.setItem("mulembe-admin-preview", "open");
-      else sessionStorage.removeItem("mulembe-admin-preview");
-    } catch {
-      /* The preview still works when browser storage is unavailable. */
-    }
+  const cache = useQueryClient();
+  const query = useQuery({ queryKey: ["cms-session"], queryFn: () => cmsRequest<Session>("session"), retry: false });
+  async function leave() {
+    await cmsRequest("logout", {});
+    cache.clear();
+    cache.setQueryData(["cms-session"], { user: null, csrf: "" });
   }
   return (
     <PreviewContext.Provider
-      value={{ active, enter: () => update(true), leave: () => update(false) }}
+      value={{ active: !!query.data?.user, loading: query.isPending, user: query.data?.user ?? null, enter: () => { void cache.invalidateQueries({ queryKey: ["cms-session"] }); }, leave }}
     >
       {children}
     </PreviewContext.Provider>
@@ -30,8 +22,9 @@ export function PreviewProvider({ children }: { children: ReactNode }) {
 }
 
 export function PreviewGate() {
-  const { active } = usePreview();
+  const { active, loading } = usePreview();
   const location = useLocation();
+  if (loading) return <p role="status" className="p-8">Checking staff session…</p>;
   return active ? (
     <Outlet />
   ) : (

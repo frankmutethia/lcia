@@ -1,3 +1,4 @@
+import PublishedContent from "@/components/PublishedContent";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Camera, Heart, Users, MapPin, Download, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -88,6 +89,7 @@ const Gallery = () => {
   return (
     <section id="gallery" className="py-20 bg-white scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
+        <PublishedContent type="gallery" />
         <div className="text-center mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0">

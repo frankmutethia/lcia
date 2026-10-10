@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Facebook, Instagram, MessageCircle, LogIn } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const scrollToSection = (sectionId: string) => {
@@ -44,6 +44,7 @@ const Footer = () => {
               <li><button onClick={() => scrollToSection('community')} className="text-left w-full text-white/80 hover:text-white transition-colors">Community</button></li>
               <li><button onClick={() => scrollToSection('leadership')} className="text-left w-full text-white/80 hover:text-white transition-colors">Leadership</button></li>
               <li><Link to="/leadership-interest" className="text-white/80 hover:text-white transition-colors">Leadership Expression of Interest</Link></li>
+              <li><button onClick={() => scrollToSection("voting")} className="text-white/80 hover:text-white transition-colors">Voting</button></li>
               <li><button onClick={() => scrollToSection('membership')} className="text-left w-full text-white/80 hover:text-white transition-colors">Membership</button></li>
               <li><button onClick={() => scrollToSection('business')} className="text-left w-full text-white/80 hover:text-white transition-colors">Business Directory</button></li>
               <li><button onClick={() => scrollToSection('welfare')} className="text-left w-full text-white/80 hover:text-white transition-colors">Welfare</button></li>
@@ -87,13 +88,6 @@ const Footer = () => {
                   <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </a>
               </div>
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-2 rounded-md border border-white/30 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-white/50 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luhya-gold focus-visible:ring-offset-2 focus-visible:ring-offset-community-earth"
-              >
-                <LogIn className="h-4 w-4" aria-hidden="true" />
-                Login
-              </Link>
               {/* Removed social text links per request; icons above remain clickable */}
             </div>
           </div>

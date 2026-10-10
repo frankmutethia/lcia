@@ -16,30 +16,32 @@ import {
   PreviewGate,
 } from "./components/admin/PreviewSession";
 
+const UsersPage = lazy(() => import("./components/admin/UsersPage"));
 const Login = lazy(() => import("./pages/admin/Login"));
+const VotingPage = lazy(() => import("./pages/VotingPage"));
 const AdminShell = lazy(() => import("./components/admin/AdminShell"));
 const Dashboard = lazy(() =>
-  import("./components/admin/AdminContent").then((m) => ({
+  import("./components/admin/ManagedPages").then((m) => ({
     default: m.Dashboard,
   })),
 );
 const EventsPage = lazy(() =>
-  import("./components/admin/AdminContent").then((m) => ({
+  import("./components/admin/ManagedPages").then((m) => ({
     default: m.EventsPage,
   })),
 );
 const GalleryPage = lazy(() =>
-  import("./components/admin/AdminContent").then((m) => ({
+  import("./components/admin/ManagedPages").then((m) => ({
     default: m.GalleryPage,
   })),
 );
 const TestimonialsPage = lazy(() =>
-  import("./components/admin/AdminContent").then((m) => ({
+  import("./components/admin/ManagedPages").then((m) => ({
     default: m.TestimonialsPage,
   })),
 );
 const CategoriesPage = lazy(() =>
-  import("./components/admin/AdminContent").then((m) => ({
+  import("./components/admin/ManagedPages").then((m) => ({
     default: m.CategoriesPage,
   })),
 );
@@ -70,6 +72,7 @@ const App = () => (
                   <Route index element={<Dashboard />} />
                   <Route path="events" element={<EventsPage />} />
                   <Route path="gallery" element={<GalleryPage />} />
+                  <Route path="users" element={<UsersPage />} />
                   <Route path="testimonials" element={<TestimonialsPage />} />
                   <Route
                     path="business-categories"
@@ -80,6 +83,8 @@ const App = () => (
               </Route>
               <Route path="/" element={<Index />} />
               <Route path="/leadership-interest" element={<LeadershipInterestPage />} />
+              <Route path="/vote" element={<VotingPage />} />
+              <Route path="/welfare" element={<Index scrollTo="welfare" />} />
               {/* Shareable links that open the home page scrolled to a section */}
               <Route path="/events" element={<Index scrollTo="events" />} />
               <Route path="/mulembe-night" element={<Index scrollTo="mulembe-night" />} />

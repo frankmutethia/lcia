@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Link,
   NavLink,
@@ -14,6 +14,7 @@ import {
   Images,
   MessageSquareQuote,
   Shapes,
+  Users,
   PanelLeftClose,
   PanelLeftOpen,
   Menu,
@@ -27,6 +28,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePreview } from "./preview-context";
+import { CMS_MODE } from "@/lib/cms";
 import adminPortrait from "@/assets/admin-portrait.jpg";
 import "./admin.css";
 
@@ -46,10 +48,15 @@ const nav = [
   },
 ];
 
+const adminNav = [
+  { label: "User management", to: "/admin/users", icon: Users },
+];
+
 export default function AdminShell() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { leave } = usePreview();
+  const { leave, user } = usePreview();
+  const [signOutError, setSignOutError] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dark, setDark] = useState(() => {
@@ -61,7 +68,7 @@ export default function AdminShell() {
   });
   const theme = dark ? "dark" : "light";
   const current =
-    nav.find((item) => item.to === pathname)?.label ?? "Page not found";
+    [...nav, ...adminNav].find((item) => item.to === pathname)?.label ?? "Page not found";
   useEffect(() => {
     const previous = document.title;
     document.title = current + " | Mulembe Admin";
@@ -78,10 +85,12 @@ export default function AdminShell() {
       /* Theme remains available for this visit. */
     }
   }
-  function signOut() {
-    leave();
+  async function signOut() {
+    try {
+    await leave();
     setMobileOpen(false);
     navigate("/login", { replace: true });
+    } catch { setSignOutError("Could not sign out. Please try again."); }
   }
   function sidebar(compact: boolean) {
     return (
@@ -151,10 +160,11 @@ export default function AdminShell() {
               Workspace
             </p>
           )}
-          {nav.map(({ label, to, icon: Icon }) => (
+          {[...nav, ...(user?.role === "administrator" ? adminNav : [])].map(({ label, to, icon: Icon }, index) => (
+            <Fragment key={to}>
+            {index === nav.length && (compact ? <div className="mx-3 my-3 border-t border-sidebar-border" /> : <p className="px-3 pb-3 pt-6 text-[10px] font-semibold uppercase text-muted-foreground">Administration</p>)}
             <NavLink
               end
-              key={to}
               to={to}
               onClick={() => setMobileOpen(false)}
               title={compact ? label : undefined}
@@ -169,6 +179,7 @@ export default function AdminShell() {
               <Icon className="h-[18px] w-[18px] shrink-0" />
               {!compact && label}
             </NavLink>
+            </Fragment>
           ))}
         </nav>
         <div className="border-t border-sidebar-border p-3">
@@ -327,9 +338,9 @@ export default function AdminShell() {
                     className="h-9 w-9 shrink-0 rounded-full object-cover"
                   />
                   <span className="hidden text-left leading-tight sm:block">
-                    <strong className="block text-xs">Admin Manager</strong>
+                    <strong className="block text-xs">{user?.name}</strong>
                     <span className="text-[11px] text-muted-foreground">
-                      Administrator
+                      {user?.role}
                     </span>
                   </span>
                   <ChevronDown className="hidden h-3 w-3 sm:block" />
@@ -362,6 +373,12 @@ export default function AdminShell() {
           id="admin-content"
           className="mx-auto max-w-[1440px] px-5 py-8 sm:px-8 lg:px-10 lg:py-10"
         >
+          {CMS_MODE === "local" && (
+            <p className="mb-6 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-900">
+              <strong>Preview mode.</strong> The content API is not connected yet, so changes are saved only in this browser. Published items show on the landing page in this browser only.
+            </p>
+          )}
+          {signOutError && <p role="alert" className="mb-4 text-red-700">{signOutError}</p>}
           <Outlet />
         </main>
       </div>

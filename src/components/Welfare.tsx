@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Heart, Users, DollarSign, Shield, Send } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import type React from "react";
+import WelfareConstitution from "@/components/WelfareConstitution";
 
 const BENEFICIARY_RELATIONSHIPS = [
   { value: "kin", label: "Kin" },
@@ -441,6 +442,7 @@ const Welfare = () => {
             </div>
 
             <div className="max-w-6xl mx-auto">
+              <WelfareConstitution />
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                 {/* Applicant Details Section */}
                 <div className="bg-gradient-to-r from-luhya-navy to-luhya-gold p-3 sm:p-4 rounded-t-lg">

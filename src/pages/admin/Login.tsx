@@ -13,9 +13,14 @@ import { Input } from "@/components/ui/input";
 import { usePreview } from "@/components/admin/preview-context";
 import harbour from "@/assets/caleb-JmuyB_LibRo-unsplash.jpg";
 import "@/components/admin/admin.css";
+import { CMS_MODE, cmsRequest, type Session } from "@/lib/cms";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Login() {
   const [show, setShow] = useState(false);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const cache = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
   const { enter } = usePreview();
@@ -27,8 +32,15 @@ export default function Login() {
       document.title = previous;
     };
   }, []);
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy) return;
+    const fields = new FormData(event.currentTarget);
+    setBusy(true); setError("");
+    try {
+    await cmsRequest<Session>("session");
+    const session = await cmsRequest<Session>("login", { email: fields.get("email"), password: fields.get("password") });
+    cache.setQueryData(["cms-session"], session);
     enter();
     const from = location.state?.from;
     navigate(
@@ -37,6 +49,8 @@ export default function Login() {
         : "/admin",
       { replace: true },
     );
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "Unable to sign in."); }
+    finally { setBusy(false); }
   }
   return (
     <div className="admin-ui grid min-h-screen lg:grid-cols-[52%_48%]">
@@ -94,6 +108,7 @@ export default function Login() {
                 <Mail className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="admin-email"
+                  name="email"
                   type="email"
                   required
                   autoComplete="username"
@@ -113,6 +128,7 @@ export default function Login() {
                 <LockKeyhole className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="admin-password"
+                  name="password"
                   type={show ? "text" : "password"}
                   required
                   autoComplete="current-password"
@@ -133,14 +149,16 @@ export default function Login() {
                 </Button>
               </div>
             </div>
-            <Button type="submit" className="h-11 w-full gap-2">
-              Open admin preview
+            {error && <p role="alert" className="rounded bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+            <Button type="submit" disabled={busy} className="h-11 w-full gap-2">
+              {busy ? "Signing in…" : "Staff Login"}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </form>
           <p className="mt-6 text-xs leading-5 text-muted-foreground">
-            Preview access only. Use a sample email and password; credentials
-            are not verified or saved.
+            {CMS_MODE === "local"
+              ? "Preview mode: sign in with any email and password. Your first sign-in becomes an administrator, and changes are saved only in this browser."
+              : "Use the staff account provided by your community administrator."}
           </p>
         </div>
         <p className="text-center text-xs text-muted-foreground">

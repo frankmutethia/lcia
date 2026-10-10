@@ -1,3 +1,4 @@
+import PublishedContent from "@/components/PublishedContent";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock, MapPin, Users, CheckCircle2, Shirt, Lock, ArrowRight, CalendarPlus } from "lucide-react";
 import CultureHeritageCards from "@/components/CultureHeritageCards";
@@ -90,6 +91,7 @@ const Events = () => {
     <>
       <section id="events" className="py-20 bg-white scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
+        <PublishedContent type="event" />
         <div className="text-center mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0">
@@ -191,7 +193,7 @@ const Events = () => {
 
               {event.image && (
                 <div className="relative w-[270px] sm:w-[320px] lg:w-[380px] self-start justify-self-center lg:justify-self-auto -mb-36 lg:-mb-52 lg:mt-4">
-                  <div className="absolute inset-0 top-4 -left-3 rounded-2xl bg-[#e0b75a] -rotate-[5deg]" />
+                  <div className="absolute inset-0 top-4 rounded-2xl bg-[#e0b75a] sm:-left-3 sm:-rotate-[5deg]" />
                   <img
                     src={event.image}
                     alt={`${event.title} poster`}

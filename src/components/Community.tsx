@@ -1,3 +1,4 @@
+import PublishedContent from "@/components/PublishedContent";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star, Quote } from "lucide-react";
@@ -80,6 +81,7 @@ const Community = () => {
   return (
     <section id="community" className="py-20 bg-white scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
+        <PublishedContent type="testimonial" />
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             What Our{" "}

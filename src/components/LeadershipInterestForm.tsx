@@ -6,6 +6,7 @@ import { EMAIL } from "@/constants/contact";
 import { CONSTITUTION_VERSION, LEADERSHIP_ROLES } from "@/constants/leadership-interest";
 import type { LeadershipRoleId } from "@/constants/leadership-interest";
 import constitutionUrl from "@/assets/OFFICIAL MULEMBE COMMUNITY NSW INC CONSTITUTION. 2026.pdf?url";
+import PdfPreview from "@/components/PdfPreview";
 
 const STEPS = ["Constitution", "Positions", "Your details"];
 const INITIAL_DETAILS = { fullName: "", dateOfBirth: "", address: "", email: "", phone: "", motivation: "" };
@@ -259,7 +260,7 @@ const LeadershipInterestForm = () => {
                       <a href={constitutionUrl} download="Mulembe-Community-NSW-Constitution-2026.pdf"><Download aria-hidden="true" />Download PDF</a>
                     </Button>
                   </div>
-                  <iframe src={`${constitutionUrl}#navpanes=0&view=FitH&zoom=page-width`} title="Official Mulembe Community NSW Inc Constitution 2026" className="block h-[70vh] min-h-[420px] max-h-[800px] w-full border-0 bg-slate-100" />
+                  <PdfPreview url={constitutionUrl} title="Official Mulembe Community NSW Inc Constitution 2026" />
                   <div className="space-y-4 border-t border-slate-200 bg-white p-4 sm:p-5">
                     <p className="text-sm leading-relaxed text-slate-600">Read through the document, then return to the acknowledgement below. If your browser cannot display the preview, use Download PDF to read a copy.</p>
                     <Button type="button" variant="outline" onClick={closePreview} className="h-auto min-h-11 whitespace-normal text-luhya-navy"><ArrowLeft aria-hidden="true" />Back to acknowledgement</Button>

@@ -10,6 +10,7 @@ import Membership from "@/components/Membership";
 import BusinessDirectory from "@/components/BusinessDirectory";
 import Welfare from "@/components/Welfare";
 import Footer from "@/components/Footer";
+import VotingPage from "@/pages/VotingPage";
 import { useEffect } from "react";
 
 const Index = ({ scrollTo }: { scrollTo?: string }) => {
@@ -36,6 +37,7 @@ const Index = ({ scrollTo }: { scrollTo?: string }) => {
       <Community />
       <Leadership />
       <LeadershipInterest />
+      <VotingPage embedded />
       <Membership />
       <BusinessDirectory />
       <Footer />
