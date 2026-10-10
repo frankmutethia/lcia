@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePreview } from "./preview-context";
-import { CMS_MODE } from "@/lib/cms";
 import adminPortrait from "@/assets/admin-portrait.jpg";
 import "./admin.css";
 
@@ -373,11 +372,6 @@ export default function AdminShell() {
           id="admin-content"
           className="mx-auto max-w-[1440px] px-5 py-8 sm:px-8 lg:px-10 lg:py-10"
         >
-          {CMS_MODE === "local" && (
-            <p className="mb-6 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-900">
-              <strong>Preview mode.</strong> The content API is not connected yet, so changes are saved only in this browser. Published items show on the landing page in this browser only.
-            </p>
-          )}
           {signOutError && <p role="alert" className="mb-4 text-red-700">{signOutError}</p>}
           <Outlet />
         </main>

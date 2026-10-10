@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { usePreview } from "@/components/admin/preview-context";
 import harbour from "@/assets/caleb-JmuyB_LibRo-unsplash.jpg";
 import "@/components/admin/admin.css";
-import { CMS_MODE, cmsRequest, type Session } from "@/lib/cms";
+import { cmsRequest, type Session } from "@/lib/cms";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Login() {
@@ -156,9 +156,7 @@ export default function Login() {
             </Button>
           </form>
           <p className="mt-6 text-xs leading-5 text-muted-foreground">
-            {CMS_MODE === "local"
-              ? "Preview mode: sign in with any email and password. Your first sign-in becomes an administrator, and changes are saved only in this browser."
-              : "Use the staff account provided by your community administrator."}
+            Use the staff account provided by your community administrator.
           </p>
         </div>
         <p className="text-center text-xs text-muted-foreground">
