@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy:zip": "npm run build && powershell Compress-Archive -Path dist/* -DestinationPath dist.zip -Force"
+    "deploy:zip": "npm run build && powershell Compress-Archive -Path dist/* -DestinationPath dist.zip -Force",
+    "photos": "node scripts/optimize-photos.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
