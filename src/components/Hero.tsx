@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Heart, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImg from "@/assets/photos/IMG_6463-Enhanced-NR.jpeg";
 
 const Hero = () => {
@@ -10,7 +11,7 @@ const Hero = () => {
     }
   };
   return (
-    <section id="home" className="min-h-screen flex items-center pt-20 sm:pt-24 pb-16 sm:pb-20 bg-white scroll-mt-24">
+    <section id="home" className="flex items-center pt-24 sm:pt-28 pb-10 sm:pb-12 bg-white scroll-mt-24">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
           {/* Content */}
@@ -55,18 +56,20 @@ const Hero = () => {
                 Become a Member
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button onClick={() => scrollToSection('welfare-form')} variant="communityOutline" size="lg" className="group text-sm sm:text-base">
-                <Heart className="w-4 h-4" />
-                Join Welfare
+              <Button asChild variant="communityOutline" size="lg" className="group text-sm sm:text-base">
+                <Link to="/welfare/apply">
+                  <Heart className="w-4 h-4" />
+                  Join Welfare
+                </Link>
               </Button>
             </div>
             <button
               type="button"
               onClick={() => scrollToSection('leadership-interest')}
-              className="inline-flex min-h-11 items-center gap-2 rounded-md text-sm font-semibold text-luhya-navy underline decoration-luhya-gold underline-offset-4 hover:text-community-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luhya-gold"
+              className="inline-flex min-h-12 items-center gap-2 rounded-md text-base sm:text-lg font-semibold text-luhya-navy underline decoration-luhya-gold decoration-2 underline-offset-4 hover:text-community-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luhya-gold"
             >
               Interested in a leadership role? Express your interest
-              <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <ArrowRight className="h-5 w-5 shrink-0" aria-hidden="true" />
             </button>
           </div>
 

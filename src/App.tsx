@@ -10,6 +10,7 @@ import TasteOfHomePage from "./pages/culture/TasteOfHomePage";
 import StoriesPage from "./pages/culture/StoriesPage";
 import LanguagePage from "./pages/culture/LanguagePage";
 import LeadershipInterestPage from "./pages/LeadershipInterestPage";
+import WelfareApplyPage from "./pages/WelfareApplyPage";
 import { lazy, Suspense } from "react";
 import {
   PreviewProvider,
@@ -85,6 +86,7 @@ const App = () => (
               <Route path="/leadership-interest" element={<LeadershipInterestPage />} />
               <Route path="/vote" element={<VotingPage />} />
               <Route path="/welfare" element={<Index scrollTo="welfare" />} />
+              <Route path="/welfare/apply" element={<WelfareApplyPage />} />
               {/* Shareable links that open the home page scrolled to a section */}
               <Route path="/events" element={<Index scrollTo="events" />} />
               <Route path="/mulembe-night" element={<Index scrollTo="mulembe-night" />} />
