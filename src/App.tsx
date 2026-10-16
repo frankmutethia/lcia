@@ -18,6 +18,18 @@ import {
 } from "./components/admin/PreviewSession";
 
 const UsersPage = lazy(() => import("./components/admin/UsersPage"));
+const PasswordPage = lazy(() => import("./pages/admin/PasswordPage"));
+const PublicContentPage = lazy(() => import("./pages/PublicContentPage"));
+const PublicDetailPage = lazy(() =>
+  import("./pages/PublicContentPage").then((module) => ({
+    default: module.PublicDetailPage,
+  })),
+);
+const BusinessesPage = lazy(() =>
+  import("./components/admin/ManagedPages").then((module) => ({
+    default: module.BusinessesPage,
+  })),
+);
 const Login = lazy(() => import("./pages/admin/Login"));
 const VotingPage = lazy(() => import("./pages/VotingPage"));
 const AdminShell = lazy(() => import("./components/admin/AdminShell"));
@@ -47,7 +59,9 @@ const CategoriesPage = lazy(() =>
   })),
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -68,12 +82,25 @@ const App = () => (
           >
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route
+                path="/forgot-password"
+                element={<PasswordPage mode="forgot" />}
+              />
+              <Route
+                path="/reset-password"
+                element={<PasswordPage mode="reset" />}
+              />
               <Route element={<PreviewGate />}>
                 <Route path="/admin" element={<AdminShell />}>
                   <Route index element={<Dashboard />} />
                   <Route path="events" element={<EventsPage />} />
                   <Route path="gallery" element={<GalleryPage />} />
                   <Route path="users" element={<UsersPage />} />
+                  <Route path="businesses" element={<BusinessesPage />} />
+                  <Route
+                    path="change-password"
+                    element={<PasswordPage mode="change" />}
+                  />
                   <Route path="testimonials" element={<TestimonialsPage />} />
                   <Route
                     path="business-categories"
@@ -83,13 +110,50 @@ const App = () => (
                 </Route>
               </Route>
               <Route path="/" element={<Index />} />
-              <Route path="/leadership-interest" element={<LeadershipInterestPage />} />
+              <Route
+                path="/leadership-interest"
+                element={<LeadershipInterestPage />}
+              />
               <Route path="/vote" element={<VotingPage />} />
               <Route path="/welfare" element={<Index scrollTo="welfare" />} />
               <Route path="/welfare/apply" element={<WelfareApplyPage />} />
               {/* Shareable links that open the home page scrolled to a section */}
-              <Route path="/events" element={<Index scrollTo="events" />} />
-              <Route path="/mulembe-night" element={<Index scrollTo="mulembe-night" />} />
+              <Route
+                path="/events"
+                element={<PublicContentPage resource="events" />}
+              />
+              <Route
+                path="/events/:slug"
+                element={<PublicDetailPage resource="events" />}
+              />
+              <Route
+                path="/albums"
+                element={<PublicContentPage resource="albums" />}
+              />
+              <Route
+                path="/albums/:slug"
+                element={<PublicDetailPage resource="albums" />}
+              />
+              <Route
+                path="/gallery"
+                element={<PublicContentPage resource="gallery/images" />}
+              />
+              <Route
+                path="/testimonials"
+                element={<PublicContentPage resource="testimonials" />}
+              />
+              <Route
+                path="/businesses"
+                element={<PublicContentPage resource="businesses" />}
+              />
+              <Route
+                path="/businesses/:slug"
+                element={<PublicDetailPage resource="businesses" />}
+              />
+              <Route
+                path="/mulembe-night"
+                element={<Index scrollTo="mulembe-night" />}
+              />
               <Route path="/tickets" element={<Index scrollTo="tickets" />} />
               <Route path="/culture/sub-tribes" element={<SubTribesPage />} />
               <Route

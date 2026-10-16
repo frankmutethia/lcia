@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="/lcia-logo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <script>
+      // Capture invitation/reset tokens before loading fonts or application code.
+      (() => {
+        const direct = /\/reset-password\/?$/.test(location.pathname);
+        const hashed = location.hash.split('?')[0] === '#/reset-password';
+        if (!direct && !hashed) return;
+        const query = direct ? location.search : (location.hash.split('?')[1] || '');
+        window.__mulembeResetToken = new URLSearchParams(query).get('token') || '';
+        const path = direct ? location.pathname.replace(/reset-password\/?$/, '') : location.pathname;
+        history.replaceState(null, '', path + '#/reset-password');
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&display=swap" rel="stylesheet" />

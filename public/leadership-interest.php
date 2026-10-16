@@ -13,15 +13,15 @@ const CONSTITUTION_VERSION = '2026';
 function positions(): array
 {
     return [
-        'chairperson' => 'Chairperson',
-        'vice-chairperson' => 'Vice-Chairperson',
-        'secretary' => 'Secretary',
+        'chairperson' => 'President',
+        'vice-chairperson' => 'Vice President',
+        'secretary' => 'Secretary General',
         'treasurer' => 'Treasurer',
         'public-officer' => 'Public Officer',
         'events-coordinator' => 'Events Coordinator',
         'welfare-coordinator' => 'Welfare Coordinator',
-        'social-media-coordinator' => 'Social Media Coordinator',
-        'advisory-representative' => 'Advisory Representative',
+        'social-media-coordinator' => 'Social Media Team — One Female and One Male',
+        'advisory-representative' => 'Advisory Team — One Female and One Male',
     ];
 }
 

@@ -78,7 +78,7 @@ $tests['valid application sends all requested fields to the fixed reviewer'] = s
     expect(strpos($mail[3], 'Reply-To: applicant@example.com') !== false, 'Reply-To must be the validated applicant email.');
     $parts = decode_email_parts($mail);
     expect(count($parts) === 3, 'Email needs HTML, JSON and CSV parts.');
-    expect(strpos($parts[0]['content'], 'Chairperson; Welfare Coordinator') !== false, 'Reviewer needs human-readable role names.');
+    expect(strpos($parts[0]['content'], 'President; Welfare Coordinator') !== false, 'Reviewer needs human-readable role names.');
     expect(strpos($parts[0]['content'], 'I would like to support the community.<br />') !== false, 'Email must include the statement with readable paragraphs.');
     expect(strpos($parts[2]['content'], 'I bring experience organising events.') !== false, 'CSV must include the applicant statement.');
     $json = json_decode($parts[1]['content'], true, 16, JSON_THROW_ON_ERROR);
@@ -86,7 +86,7 @@ $tests['valid application sends all requested fields to the fixed reviewer'] = s
         expect($json[$key] === $value, 'JSON attachment must preserve field: ' . $key);
     }
     expect(isset($json['submittedAt']) && strpos($json['submittedAt'], 'T') !== false, 'Submission timestamp must be server-generated.');
-    expect($json['positionNames'] === ['Chairperson', 'Welfare Coordinator'], 'JSON attachment must explain the role IDs.');
+    expect($json['positionNames'] === ['President', 'Welfare Coordinator'], 'JSON attachment must explain the role IDs.');
     expect(strpos($parts[2]['headers'], 'leadership-expression-of-interest.csv') !== false, 'CSV attachment must have a readable filename.');
 };
 

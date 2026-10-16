@@ -35,6 +35,7 @@ const nav = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
   { label: "Events & activities", to: "/admin/events", icon: CalendarDays },
   { label: "Community gallery", to: "/admin/gallery", icon: Images },
+  { label: "Businesses & services", to: "/admin/businesses", icon: Shapes },
   {
     label: "Testimonials",
     to: "/admin/testimonials",
@@ -67,7 +68,10 @@ export default function AdminShell() {
   });
   const theme = dark ? "dark" : "light";
   const current =
-    [...nav, ...adminNav].find((item) => item.to === pathname)?.label ?? "Page not found";
+    [...nav, ...adminNav].find((item) => item.to === pathname)?.label ??
+    (pathname === "/admin/change-password"
+      ? "Change password"
+      : "Page not found");
   useEffect(() => {
     const previous = document.title;
     document.title = current + " | Mulembe Admin";
@@ -86,10 +90,12 @@ export default function AdminShell() {
   }
   async function signOut() {
     try {
-    await leave();
-    setMobileOpen(false);
-    navigate("/login", { replace: true });
-    } catch { setSignOutError("Could not sign out. Please try again."); }
+      await leave();
+      setMobileOpen(false);
+      navigate("/login", { replace: true });
+    } catch {
+      setSignOutError("Could not sign out. Please try again.");
+    }
   }
   function sidebar(compact: boolean) {
     return (
@@ -159,27 +165,36 @@ export default function AdminShell() {
               Workspace
             </p>
           )}
-          {[...nav, ...(user?.role === "administrator" ? adminNav : [])].map(({ label, to, icon: Icon }, index) => (
-            <Fragment key={to}>
-            {index === nav.length && (compact ? <div className="mx-3 my-3 border-t border-sidebar-border" /> : <p className="px-3 pb-3 pt-6 text-[10px] font-semibold uppercase text-muted-foreground">Administration</p>)}
-            <NavLink
-              end
-              to={to}
-              onClick={() => setMobileOpen(false)}
-              title={compact ? label : undefined}
-              aria-label={label}
-              className={({ isActive }) =>
-                "flex min-h-11 items-center gap-3 rounded-md px-3 py-3 text-[13px] font-medium transition-colors " +
-                (isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground")
-              }
-            >
-              <Icon className="h-[18px] w-[18px] shrink-0" />
-              {!compact && label}
-            </NavLink>
-            </Fragment>
-          ))}
+          {[...nav, ...(user?.role === "super_admin" ? adminNav : [])].map(
+            ({ label, to, icon: Icon }, index) => (
+              <Fragment key={to}>
+                {index === nav.length &&
+                  (compact ? (
+                    <div className="mx-3 my-3 border-t border-sidebar-border" />
+                  ) : (
+                    <p className="px-3 pb-3 pt-6 text-[10px] font-semibold uppercase text-muted-foreground">
+                      Administration
+                    </p>
+                  ))}
+                <NavLink
+                  end
+                  to={to}
+                  onClick={() => setMobileOpen(false)}
+                  title={compact ? label : undefined}
+                  aria-label={label}
+                  className={({ isActive }) =>
+                    "flex min-h-11 items-center gap-3 rounded-md px-3 py-3 text-[13px] font-medium transition-colors " +
+                    (isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground")
+                  }
+                >
+                  <Icon className="h-[18px] w-[18px] shrink-0" />
+                  {!compact && label}
+                </NavLink>
+              </Fragment>
+            ),
+          )}
         </nav>
         <div className="border-t border-sidebar-border p-3">
           <Link
@@ -353,9 +368,17 @@ export default function AdminShell() {
                   className="admin-ui z-50 min-w-52 rounded-md border border-border bg-popover p-2 shadow-lg"
                 >
                   <Dropdown.Label className="px-3 py-2 text-xs text-muted-foreground">
-                    Preview account
+                    Staff account
                   </Dropdown.Label>
                   <Dropdown.Separator className="my-1 h-px bg-border" />
+                  <Dropdown.Item asChild>
+                    <Link
+                      to="/admin/change-password"
+                      className="block rounded px-3 py-2 text-sm outline-none focus:bg-accent"
+                    >
+                      Change password
+                    </Link>
+                  </Dropdown.Item>
                   <Dropdown.Item
                     onSelect={signOut}
                     className="flex cursor-pointer items-center gap-2 rounded px-3 py-2 text-sm outline-none focus:bg-accent"
@@ -372,7 +395,11 @@ export default function AdminShell() {
           id="admin-content"
           className="mx-auto max-w-[1440px] px-5 py-8 sm:px-8 lg:px-10 lg:py-10"
         >
-          {signOutError && <p role="alert" className="mb-4 text-red-700">{signOutError}</p>}
+          {signOutError && (
+            <p role="alert" className="mb-4 text-red-700">
+              {signOutError}
+            </p>
+          )}
           <Outlet />
         </main>
       </div>

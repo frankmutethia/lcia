@@ -1,18 +1,179 @@
-import { useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { X, Calendar, MapPin, Quote } from "lucide-react";
-import { cmsImage, usePublishedContent, type ContentItem, type ContentType } from "@/lib/cms";
-
-export default function PublishedContent({ type }: { type: ContentType }) {
-  const query = usePublishedContent();
-  const [selected, setSelected] = useState<ContentItem>();
-  const items = query.data?.items.filter(item => item.type === type) ?? [];
-  if (!items.length) return null;
-  return <div className="mb-12">
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{items.map(item => <article key={item.id} className="min-w-0 overflow-hidden rounded-xl border bg-white shadow-sm">
-      {item.data.image && (type === "gallery" ? <button type="button" onClick={() => setSelected(item)} className="block w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luhya-green" aria-label={`View ${item.data.title}`}><img src={cmsImage(item.data.image)} alt={item.data.title} loading="lazy" className="aspect-[4/3] w-full object-cover" /></button> : <img src={cmsImage(item.data.image)} alt={item.data.title} loading="lazy" className="aspect-[4/3] w-full object-cover" />)}
-      <div className="p-5">{type === "testimonial" && <Quote className="mb-3 h-6 w-6 text-luhya-green" aria-hidden="true" />}<h3 className="break-words text-lg font-semibold text-luhya-navy">{item.data.title}</h3>{type === "testimonial" && <p className="mt-1 text-sm text-muted-foreground">{item.data.role}</p>}<p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">{item.data.description}</p>{type === "event" && <div className="mt-4 space-y-2 text-sm"><p className="flex items-center gap-2"><Calendar className="h-4 w-4 shrink-0" aria-hidden="true" /><span>{item.data.date} · {item.data.time}</span></p><p className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="break-words">{item.data.location}</span></p><p className="text-xs text-luhya-green">{item.data.category}</p></div>}</div>
-    </article>)}</div>
-    <Dialog.Root open={!!selected} onOpenChange={open => { if (!open) setSelected(undefined); }}><Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-[70] bg-black/80" /><Dialog.Content className="fixed left-1/2 top-1/2 z-[71] max-h-[90dvh] w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-white p-4"><Dialog.Title className="pr-12 font-semibold">{selected?.data.title}</Dialog.Title><Dialog.Description className="mb-3 text-sm text-muted-foreground">{selected?.data.description || "Community gallery image"}</Dialog.Description>{selected?.data.image && <img src={cmsImage(selected.data.image)} alt={selected.data.title} className="max-h-[70dvh] w-full object-contain" />}<Dialog.Close aria-label="Close image" className="absolute right-3 top-3 rounded p-2"><X className="h-5 w-5" /></Dialog.Close></Dialog.Content></Dialog.Portal></Dialog.Root>
-  </div>;
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import {
+  api,
+  eventDate,
+  eventTime,
+  mediaUrl,
+  type ApiDocument,
+} from "@/lib/api";
+import { ErrorMessage } from "@/components/api/Controls";
+import { usePublicHome } from "@/lib/public-content";
+export function PublicCards({
+  items,
+  resource,
+}: {
+  items: ApiDocument[];
+  resource: string;
+}) {
+  return (
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => {
+        const image = mediaUrl(
+          item.media || item.cover || item.photo || item.image,
+        );
+        const link =
+          item.slug && ["events", "albums", "businesses"].includes(resource)
+            ? `/${resource}/${encodeURIComponent(item.slug)}`
+            : undefined;
+        return (
+          <article
+            key={item._id}
+            className="min-w-0 overflow-hidden rounded-xl border bg-white shadow-sm"
+          >
+            {image && (
+              <img
+                src={image}
+                alt={item.alt || item.title || item.name || ""}
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover"
+              />
+            )}
+            <div className="p-5">
+              <h3 className="break-words text-xl font-semibold text-luhya-navy">
+                {link ? (
+                  <Link className="hover:underline" to={link}>
+                    {item.title || item.name}
+                  </Link>
+                ) : (
+                  item.title || item.name
+                )}
+              </h3>
+              {resource === "events" && (
+                <p className="mt-2 text-sm text-luhya-green">
+                  {eventDate(item)} · {eventTime(item)}
+                  <span className="block">
+                    {item.venueLabel || item.venueName}
+                  </span>
+                </p>
+              )}
+              {resource === "testimonials" && (
+                <p
+                  className="mt-2 text-sm"
+                  aria-label={`${item.rating} out of 5 stars`}
+                >
+                  {"★".repeat(Math.max(0, Math.min(5, item.rating || 0)))} ·{" "}
+                  {item.memberTitle}
+                </p>
+              )}
+              <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">
+                {item.summary ||
+                  item.comment ||
+                  item.caption ||
+                  item.description}
+              </p>
+              {resource === "albums" && (
+                <p className="mt-2 text-sm">{item.photoCount ?? 0} photos</p>
+              )}
+              {resource === "business-categories" && (
+                <p className="mt-2 text-sm">
+                  {item.businessCount ?? 0} businesses
+                </p>
+              )}
+              {item.services?.length ? (
+                <ul className="mt-3 list-inside list-disc text-sm">
+                  {item.services.map((service) => (
+                    <li key={service._id}>{service.title}</li>
+                  ))}
+                </ul>
+              ) : null}
+              {link && (
+                <Link
+                  className="mt-4 inline-block text-sm font-semibold text-luhya-green underline"
+                  to={link}
+                >
+                  View details
+                </Link>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+export default function PublishedContent({
+  type,
+}: {
+  type: "event" | "gallery" | "testimonial" | "category" | "business";
+}) {
+  const query = usePublicHome();
+  const categories = useQuery({
+    queryKey: ["public", "home-categories"],
+    queryFn: () =>
+      api<ApiDocument[]>("/business-categories", { params: { limit: 6 } }),
+    enabled: type === "category",
+    staleTime: 30000,
+    retry: false,
+  });
+  const home = query.data?.data;
+  const resource = {
+    event: "events",
+    gallery: "albums",
+    testimonial: "testimonials",
+    category: "business-categories",
+    business: "businesses",
+  }[type];
+  const items =
+    type === "category"
+      ? categories.data?.data
+      : home
+        ? type === "event"
+          ? [
+              ...new Map(
+                [...home.upcomingEvents, ...home.featuredEvents].map((item) => [
+                  item._id,
+                  item,
+                ]),
+              ).values(),
+            ]
+          : type === "gallery"
+            ? home.albums
+            : type === "testimonial"
+              ? home.testimonials
+              : home.businesses
+        : [];
+  const target = type === "category" ? "/businesses" : `/${resource}`;
+  const current = type === "category" ? categories : query;
+  return (
+    <div className="mb-10">
+      {current.isPending && (
+        <p role="status" className="py-6">
+          Loading community updates…
+        </p>
+      )}
+      <ErrorMessage error={current.error} />
+      {current.isError && (
+        <button
+          className="mb-4 text-sm underline"
+          onClick={() => current.refetch()}
+        >
+          Try again
+        </button>
+      )}
+      {items?.length ? (
+        <PublicCards items={items} resource={resource} />
+      ) : !current.isPending && !current.isError ? (
+        <p className="py-6 text-muted-foreground">
+          New community updates will appear here when published.
+        </p>
+      ) : null}
+      <Link
+        to={target}
+        className="mt-5 inline-block font-medium text-luhya-green underline"
+      >
+        {type === "testimonial" ? "Read more / share your story" : "Browse all"}
+      </Link>
+    </div>
+  );
 }

@@ -28,8 +28,6 @@ const Events = () => {
   ];
 
   const tickets = [
-    { name: "Early Bird", price: 90, unit: "per person", badge: "Save $10", link: "https://buy.stripe.com/aFa5kxceI9p12pMfZ0bQY00",
-      description: "Planning to join us? Why wait? Get your ticket early and enjoy our special Early Bird rate." },
     { name: "Standard", price: 100, unit: "per person", link: "https://buy.stripe.com/7sYfZb0w0gRt3tQ8wybQY02",
       description: "Ready for Mulembe Night? Get your ticket and join us for an evening of culture, connection, food, music and celebration." },
     { name: "Group of 4", price: 380, unit: "$95 per person", badge: "Save $20", link: "https://buy.stripe.com/4gMaERguY9p13tQ146bQY03",
@@ -79,7 +77,7 @@ const Events = () => {
       location: "Venue details will be shared with members",
       attendees: "All members and guests welcome",
       description:
-        "EARLY BIRD — $90 | Planning to join us? Why wait? Get your ticket early and enjoy our special Early Bird rate. STANDARD — $100 | Ready for Mulembe Night? Get your ticket and join us for an evening of culture, connection, food, music and celebration. GROUP OF 4 — $380 | Coming with friends? We’ve got you! Grab 4 tickets together and enjoy a discounted group rate.",
+        "STANDARD — $100 | Ready for Mulembe Night? Get your ticket and join us for an evening of culture, connection, food, music and celebration. GROUP OF 4 — $380 | Coming with friends? We’ve got you! Grab 4 tickets together and enjoy a discounted group rate.",
       image: midYearCatchupPoster,
       hidden: true,
     },
