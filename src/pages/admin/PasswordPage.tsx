@@ -8,6 +8,7 @@ import {
   fieldClass,
 } from "@/components/api/Controls";
 import { Button } from "@/components/ui/button";
+import AuthLayout from "@/components/admin/AuthLayout";
 declare global {
   interface Window {
     __mulembeResetToken?: string;
@@ -71,14 +72,21 @@ export default function PasswordPage({
     }
   }
   return (
-    <main className="mx-auto min-h-[70vh] max-w-lg px-4 py-12">
-      <h1 className="text-3xl font-bold">
-        {mode === "forgot"
+    <AuthLayout
+      embedded={mode === "change"}
+      title={
+        mode === "forgot"
           ? "Forgot password"
           : mode === "reset"
             ? "Set your password"
-            : "Change password"}
-      </h1>
+            : "Change password"
+      }
+      description={
+        mode === "forgot"
+          ? "Enter your email address to request a password reset link."
+          : "Choose a secure password for your community account."
+      }
+    >
       {message ? (
         <p role="status" className="my-6 rounded border p-4">
           {message}
@@ -150,7 +158,7 @@ export default function PasswordPage({
             </>
           )}
           <ErrorMessage error={error} />
-          <Button disabled={busy} type="submit">
+          <Button disabled={busy} type="submit" className="h-11 w-full">
             {busy
               ? "Please wait…"
               : mode === "forgot"
@@ -162,6 +170,6 @@ export default function PasswordPage({
       <Link className="mt-5 inline-block underline" to="/login">
         Back to Member Login
       </Link>
-    </main>
+    </AuthLayout>
   );
 }
